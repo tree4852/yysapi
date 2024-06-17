@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>탭 만듥기</title>
+</head>
+    <body>
+    <div id="ted">
+        <ul>
+            <li><button class="btn">ㅁㅁㅁ</button></li>
+            <li><button class="btn">ㅇㅇㅇ</button></li>
+            <li><button class="btn">ㅍㅍㅊ</button></li>
+        </ul>
+        <div id="tabcontent">
+            <p></p>
+            <p></p>
+
+        </div>
+    </div>
+
+
+    <script>
+        const mapinfo =[
+            {
+                위도 : "37.11111",
+                경도 : "126.81111"
+            },
+            {  위도 : "37.522222",
+               경도 : "126.82222"
+            },
+            {  위도 : "37.5333",
+               경도 : "126.3333"
+            },
+        ]
+
+        // const targetdiv = document.getElementById("tabcontent");
+        const targetdivp = document.querySelectorAll("#tabcontent p");
+        const btns = document.querySelectorAll(".btn");
+
+        btns.forEach(function(ele, idx){
+            //ele 각 버튼 ,idx 0~ 순번
+            ele.addEventListener('click' , function(){
+                contentinner(idx)
+            })
+
+        })
+
+        function contentinner(num){ // 선언적 함수의 특징 : 위치에 상관없이 먼저 번역 저장
+            targetdivp[0].innerHTML = mapinfo[num].위도;
+            targetdivp[1].innerHTML = mapinfo[num].경도;
+
+        } //재사용
+
+
+        
+        
+
+    </script>
+        
+    </body>
+</html>

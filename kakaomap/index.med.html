@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>여러 지점의 지도 표시</title>
+    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=f8ec40973fab96735277dbe65b0f5f6f"></script>
+    <style>
+        .map-container {
+            width: 100%;
+            height: 350px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+    <body>
+    <div id="map1" class="map-container"></div>
+    <p><button onclick="setZoomable('map1', false)">지도1 확대/축소 끄기</button>
+        <button onclick="setZoomable('map1', true)">지도1 확대/축소 켜기</button></p>
+        
+    <div id="map2" class="map-container"></div>
+    <p><button onclick="setZoomable('map2', false)">지도2 확대/축소 끄기</button>
+        <button onclick="setZoomable('map2', true)">지도2 확대/축소 켜기</button></p>
+    <div id="map3" class="map-container"></div>
+
+    <p>
+    <button onclick="setZoomable('map3', false)">지도3 확대/축소 끄기</button>
+    <button onclick="setZoomable('map3', true)">지도3 확대/축소 켜기</button>
+    </p>
+
+        <script>
+        // 지도를 표시할 div와 옵션 설정
+        var mapOptions = [
+            {
+                container: document.getElementById('map1'),
+                center: new kakao.maps.LatLng(37.5083, 126.8903),
+                level: 3
+            },
+            {
+                container: document.getElementById('map2'),
+                center: new kakao.maps.LatLng(37.5704, 126.9826),
+                level: 3
+            },
+            {
+                container: document.getElementById('map3'),
+                center: new kakao.maps.LatLng(37.4508, 126.7072),
+                level: 3
+            }
+        ];
+
+        // 각 지도 생성
+        var maps = mapOptions.map(option => new kakao.maps.Map(option.container, option));
+
+        var positions = [
+            {
+                title: '신도림 캠퍼스', 
+                latlng: new kakao.maps.LatLng(37.5083, 126.8903),
+                mapIndex: 0
+            },
+            {
+                title: '종로 캠퍼스', 
+                latlng: new kakao.maps.LatLng(37.5704, 126.9826),
+                mapIndex: 1
+            },
+            {
+                title: '인천 구월 캠퍼스', 
+                latlng: new kakao.maps.LatLng(37.4508, 126.7072),
+                mapIndex: 2
+            }
+        ];
+
+        // 마커와 인포윈도우 설정
+        positions.forEach(position => {
+            var marker = new kakao.maps.Marker({
+                map: maps[position.mapIndex],
+                position: position.latlng,
+                title: position.title
+            });
+
+            var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="padding:5px;">' + position.title + '</div>'
+            });
+
+            kakao.maps.event.addListener(marker, 'click', makeOverListener(maps[position.mapIndex], marker, infowindow));
+        });
+
+        // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+        function makeOverListener(map, marker, infowindow) {
+            return function() {
+                infowindow.open(map, marker);
+            };
+        }
+
+        // 지도 확대/축소 기능을 설정하는 함수
+        function setZoomable(mapId, zoomable) {
+            var mapIndex = mapId === 'map1' ? 0 : mapId === 'map2' ? 1 : 2;
+            maps[mapIndex].setZoomable(zoomable);
+        }
+        </script>
+    </body>
+</html>
